@@ -26,7 +26,16 @@ public class PinMovement : MonoBehaviour
 
             AudioSource.PlayClipAtPoint(popSound, transform.position);
 
-            Destroy(other.gameObject);
+            BalloonMovement balloonScript = other.gameObject.GetComponent<BalloonMovement>();
+
+            if (balloonScript != null)
+            {
+                balloonScript.TriggerPop();
+            }
+            else
+            {
+                Destroy(other.gameObject);
+            }
             Destroy(gameObject);
 
             GameManager.instance.BalloonPopped();

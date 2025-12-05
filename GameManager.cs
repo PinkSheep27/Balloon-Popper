@@ -33,8 +33,15 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        scoreText = GameObject.FindGameObjectWithTag("ScoreText").GetComponent<TextMeshProUGUI>();
-        UpdateScoreText();
+        GameObject textObj = GameObject.FindGameObjectWithTag("ScoreText");
+
+        if (textObj != null)
+        {
+            scoreText = textObj.GetComponent<TextMeshProUGUI>();
+            UpdateScoreText();
+        }
+        //scoreText = GameObject.FindGameObjectWithTag("ScoreText").GetComponent<TextMeshProUGUI>();
+        //UpdateScoreText();
 
         balloonsInLevel = GameObject.FindGameObjectsWithTag("Balloon").Length;
 
@@ -100,9 +107,7 @@ public class GameManager : MonoBehaviour
     public void LoadNextLevel()
     {
         if (isPaused) TogglePause();
-        {
-            
-        }
+      
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
 
@@ -112,6 +117,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            HighScoreManager.SaveScore(score);
+
+            score = 0;
+
             SceneManager.LoadScene(0);
         }
     }

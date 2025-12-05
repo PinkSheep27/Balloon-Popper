@@ -14,9 +14,15 @@ public class BalloonMovement : MonoBehaviour
     private float spriteWidth;
 
     private SpriteRenderer sr;
+
+    private Animator anim;
+    private bool isPopped = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        anim = GetComponent<Animator>();
+
         Camera mainCamera = Camera.main;
 
         sr = GetComponent<SpriteRenderer>();
@@ -61,5 +67,17 @@ public class BalloonMovement : MonoBehaviour
 
             Destroy(gameObject);
         }
+    }
+    public void TriggerPop()
+    {
+        if (isPopped) return;
+        isPopped = true;
+
+        if (anim != null) anim.SetTrigger("Pop");
+
+        speed = 0;
+        CancelInvoke("Grow");
+
+        Destroy(gameObject, 0.5f);
     }
 }

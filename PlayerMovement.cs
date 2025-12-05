@@ -18,14 +18,25 @@ public class PlayerMovement : MonoBehaviour
     private float bottomBoundary;
     private float spriteWidth;
     private float spriteHeight;
+    private Animator anim;
+
+    [Header("Costume Settings")]
+    public Sprite darkWizardSprite;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         mainCamera = Camera.main;
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
+
+        if (MainMenuController.isDarkMode == true)
+        {
+            sr.sprite = darkWizardSprite;
+        }
+
         spriteWidth = sr.bounds.size.x / 2;
         spriteHeight = sr.bounds.size.y / 2;
 
@@ -51,6 +62,9 @@ public class PlayerMovement : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
 
         movementInput = new Vector2(moveX, moveY).normalized;
+
+        if (movementInput != Vector2.zero) anim.SetBool("IsMoving", true);
+        else anim.SetBool("IsMoving", false);
 
         if (moveX > 0 && !isFacingRight) Flip();
         else if (moveX < 0 && isFacingRight) Flip();
